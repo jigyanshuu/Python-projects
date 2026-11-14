@@ -2,87 +2,158 @@
 import math
 
 
-# Function to perform calculations
-def calculate(choice):
+# Individual mathematical functions
 
-    try:
+def add(a, b):
+    return a + b
 
-        # Square root requires only one number
-        if choice == "7":
 
-            num = float(input("Enter a number: "))
+def subtract(a, b):
+    return a - b
 
-            if num < 0:
-                print("Error: Cannot calculate square root of a negative number.")
+
+def multiply(a, b):
+    return a * b
+
+
+def divide(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Cannot divide by zero.")
+    return a / b
+
+
+def modulus(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Cannot calculate modulus by zero.")
+    return a % b
+
+
+def power(a, b):
+    return a ** b
+
+
+def square_root(a):
+    if a < 0:
+        raise ValueError("Cannot calculate square root of a negative number.")
+    return math.sqrt(a)
+
+
+# Function to get valid numeric input
+
+def get_number(message):
+    while True:
+        try:
+            return float(input(message))
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+
+
+# Function to display calculation history
+
+def show_history(history):
+
+    if not history:
+        print("\nNo calculation history available.")
+        return
+
+    print("\n========== CALCULATION HISTORY ==========")
+
+    for number, calculation in enumerate(history, start=1):
+        print(f"{number}. {calculation}")
+
+    print("==========================================")
+
+
+# Main calculator program
+
+def main():
+
+    history = []
+
+    while True:
+
+        print("\n================================")
+        print("       PYTHON CALCULATOR")
+        print("================================")
+        print("1. Addition")
+        print("2. Subtraction")
+        print("3. Multiplication")
+        print("4. Division")
+        print("5. Modulus")
+        print("6. Power")
+        print("7. Square Root")
+        print("8. View History")
+        print("9. Clear History")
+        print("0. Exit")
+
+        choice = input("\nEnter your choice: ")
+
+        if choice == "0":
+            print("Thank you for using the calculator!")
+            break
+
+        elif choice == "8":
+            show_history(history)
+            continue
+
+        elif choice == "9":
+            history.clear()
+            print("Calculation history cleared!")
+            continue
+
+        elif choice not in ["1", "2", "3", "4", "5", "6", "7"]:
+            print("Invalid choice! Please try again.")
+            continue
+
+        try:
+
+            if choice == "7":
+
+                num = get_number("Enter a number: ")
+                result = square_root(num)
+
+                expression = f"√{num:g} = {result:g}"
 
             else:
-                result = math.sqrt(num)
-                print(f"Result: {result:g}")
 
-        else:
+                num1 = get_number("Enter first number: ")
+                num2 = get_number("Enter second number: ")
 
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
+                if choice == "1":
+                    result = add(num1, num2)
+                    symbol = "+"
 
-            if choice == "1":
-                result = num1 + num2
+                elif choice == "2":
+                    result = subtract(num1, num2)
+                    symbol = "-"
 
-            elif choice == "2":
-                result = num1 - num2
+                elif choice == "3":
+                    result = multiply(num1, num2)
+                    symbol = "*"
 
-            elif choice == "3":
-                result = num1 * num2
+                elif choice == "4":
+                    result = divide(num1, num2)
+                    symbol = "/"
 
-            elif choice == "4":
+                elif choice == "5":
+                    result = modulus(num1, num2)
+                    symbol = "%"
 
-                if num2 == 0:
-                    print("Error: Division by zero is not allowed.")
-                    return
+                elif choice == "6":
+                    result = power(num1, num2)
+                    symbol = "**"
 
-                result = num1 / num2
+                expression = f"{num1:g} {symbol} {num2:g} = {result:g}"
 
-            elif choice == "5":
+            print("\nResult:", expression)
 
-                if num2 == 0:
-                    print("Error: Modulus by zero is not allowed.")
-                    return
+            history.append(expression)
 
-                result = num1 % num2
-
-            elif choice == "6":
-                result = num1 ** num2
-
-            print(f"Result: {result:g}")
-
-    except ValueError:
-        print("Invalid input! Please enter numeric values.")
+        except (ValueError, ZeroDivisionError, OverflowError) as error:
+            print("\nError:", error)
 
 
-# Main program
-print("================================")
-print("       PYTHON CALCULATOR")
-print("================================")
+# Start the program
 
-while True:
-
-    print("\nSelect an operation:")
-    print("1. Addition")
-    print("2. Subtraction")
-    print("3. Multiplication")
-    print("4. Division")
-    print("5. Modulus")
-    print("6. Power")
-    print("7. Square Root")
-    print("8. Exit")
-
-    choice = input("\nEnter your choice (1-8): ")
-
-    if choice == "8":
-        print("Thank you for using the calculator!")
-        break
-
-    elif choice in ["1", "2", "3", "4", "5", "6", "7"]:
-        calculate(choice)
-
-    else:
-        print("Invalid choice! Please select between 1 and 8.")
+if __name__ == "__main__":
+    main()
